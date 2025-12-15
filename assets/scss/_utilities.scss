@@ -1,0 +1,134 @@
+/* --- COLOR UTILITIES --- */
+// Generates: .text-primary, .bg-primary, .text-danger, etc.
+@each $name, $value in $colors {
+    .text-#{$name} {
+        color: $value !important;
+    }
+    .bg-#{$name} {
+        background-color: $value !important;
+    }
+}
+
+/* --- SPACING UTILITIES --- */
+// Generates: .m-1, .p-4, .mt-2, .mb-auto, etc.
+@each $name, $value in $spacers {
+    // Margin
+    .m-#{$name} {
+        margin: $value;
+    }
+    .mt-#{$name} {
+        margin-top: $value;
+    }
+    .mb-#{$name} {
+        margin-bottom: $value;
+    }
+    .ml-#{$name} {
+        margin-left: $value;
+    }
+    .mr-#{$name} {
+        margin-right: $value;
+    }
+    .mx-#{$name} {
+        margin-left: $value;
+        margin-right: $value;
+    }
+    .my-#{$name} {
+        margin-top: $value;
+        margin-bottom: $value;
+    }
+
+    // Padding
+    .p-#{$name} {
+        padding: $value;
+    }
+    .pt-#{$name} {
+        padding-top: $value;
+    }
+    .pb-#{$name} {
+        padding-bottom: $value;
+    }
+    .pl-#{$name} {
+        padding-left: $value;
+    }
+    .pr-#{$name} {
+        padding-right: $value;
+    }
+    .px-#{$name} {
+        padding-left: $value;
+        padding-right: $value;
+    }
+    .py-#{$name} {
+        padding-top: $value;
+        padding-bottom: $value;
+    }
+}
+
+/* --- FLEXBOX UTILITIES --- */
+.flex {
+    display: flex;
+}
+.flex-col {
+    flex-direction: column;
+}
+.flex-row {
+    flex-direction: row;
+}
+.flex-wrap {
+    flex-wrap: wrap;
+}
+
+.items-center {
+    align-items: center;
+}
+.items-start {
+    align-items: flex-start;
+}
+.items-end {
+    align-items: flex-end;
+}
+
+.justify-center {
+    justify-content: center;
+}
+.justify-between {
+    justify-content: space-between;
+}
+.justify-start {
+    justify-content: flex-start;
+}
+.justify-end {
+    justify-content: flex-end;
+}
+
+.gap-1 {
+    gap: 0.25rem;
+}
+.gap-2 {
+    gap: 0.5rem;
+}
+.gap-4 {
+    gap: 1rem;
+}
+
+/* --- OTHER HELPERS --- */
+.w-full {
+    width: 100%;
+}
+.h-full {
+    height: 100%;
+}
+.rounded {
+    border-radius: var(--radius);
+}
+.shadow {
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+.text-center {
+    text-align: center;
+}
+.font-bold {
+    font-weight: 700;
+}
+.hidden {
+    display: none;
+}

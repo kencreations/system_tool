@@ -1,0 +1,72 @@
+/* --- FORM ELEMENTS --- */
+
+.form-group {
+    margin-bottom: 1.5rem;
+}
+
+label {
+    display: block;
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--dark);
+    margin-bottom: 0.5rem;
+}
+
+/* Base Input Style */
+.form-control {
+    display: block;
+    width: 100%;
+    padding: 0.625rem 0.75rem;
+    font-size: 1rem;
+    font-family: inherit;
+    color: var(--dark);
+    background-color: var(--white);
+    background-clip: padding-box;
+    border: 1px solid #cbd5e1; /* Slate-300 */
+    border-radius: var(--radius);
+    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+
+    &:focus {
+        color: var(--dark);
+        background-color: var(--white);
+        border-color: var(--primary);
+        outline: 0;
+        /* A subtle glow effect using the primary color */
+        box-shadow: 0 0 0 3px rgba(var(--primary), 0.1);
+    }
+
+    &::placeholder {
+        color: #94a3b8;
+    }
+}
+
+/* Select Dropdown */
+select.form-control {
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23343a40' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M2 5l6 6 6-6'/%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: right 0.75rem center;
+    background-size: 16px 12px;
+}
+
+/* Checkbox & Radio wrapper */
+.form-check {
+    display: flex;
+    align-items: center;
+    margin-bottom: 0.5rem;
+
+    input[type="checkbox"],
+    input[type="radio"] {
+        margin-right: 0.5rem;
+        accent-color: var(--primary); /* Modern browser feature! */
+        width: 1rem;
+        height: 1rem;
+        cursor: pointer;
+    }
+
+    label {
+        margin-bottom: 0; /* Reset label margin for inline alignment */
+        cursor: pointer;
+        font-weight: 400;
+    }
+}
