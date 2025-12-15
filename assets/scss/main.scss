@@ -1,19 +1,193 @@
-@import "variables";
-@import "reset";
-@import "utilities";
-@import "components";
-@import "forms";
-// Add specific component styles here if they are too complex for utilities
+/* =========================================
+   1. RESET & VARIABLES
+   ========================================= */
+:root {
+    /* Brand Colors */
+    --primary: #3b82f6; /* Blue */
+    --secondary: #64748b; /* Slate Gray */
+    --success: #22c55e; /* Green */
+    --danger: #ef4444; /* Red */
+    --light: #f8fafc; /* Background White/Gray */
+    --dark: #1e293b; /* Text Dark */
+
+    /* Global Settings */
+    --font-base: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
+    --radius: 6px;
+    --shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: var(--font-base);
+    background-color: var(--light);
+    color: var(--dark);
+    line-height: 1.5;
+}
+
+/* =========================================
+   2. LAYOUT UTILITIES (The Engine)
+   ========================================= */
+
+/* --- Flexbox --- */
+.flex {
+    display: flex;
+}
+.flex-wrap {
+    flex-wrap: wrap;
+}
+.flex-col {
+    flex-direction: column;
+}
+.items-center {
+    align-items: center;
+}
+
+/* --- Alignment & Positioning --- */
+.justify-start {
+    justify-content: flex-start;
+}
+.justify-center {
+    justify-content: center;
+}
+.justify-end {
+    justify-content: flex-end;
+}
+.justify-between {
+    justify-content: space-between;
+}
+
+/* Critical for pushing buttons to the right */
+.ml-auto {
+    margin-left: auto !important;
+}
+.mr-auto {
+    margin-right: auto !important;
+}
+
+/* --- Grid / Columns --- */
+/* Negative margin wrapper to handle gutter spacing */
+.-mx-2 {
+    margin-left: -0.5rem;
+    margin-right: -0.5rem;
+}
+.px-2 {
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+}
+.mb-4 {
+    margin-bottom: 1rem;
+}
+
+/* --- Width Utilities --- */
+.w-100 {
+    width: 100%;
+}
+.w-50 {
+    width: 50%;
+}
+.w-33 {
+    width: 33.3333%;
+}
+.w-25 {
+    width: 25%;
+}
+.w-auto {
+    width: auto;
+} /* Allows buttons to sit side-by-side */
+.w-full {
+    width: 100%;
+}
+
+/* =========================================
+   3. COMPONENTS
+   ========================================= */
+
+/* --- Buttons --- */
 .btn {
     display: inline-block;
-    padding: 0.5rem 1rem;
-    border-radius: var(--radius);
+    padding: 0.6rem 1.2rem;
     font-weight: 600;
+    text-align: center;
+    border-radius: var(--radius);
+    border: 1px solid transparent;
     cursor: pointer;
-    border: none;
-    transition: opacity 0.2s;
+    transition: all 0.2s ease;
+    font-size: 0.95rem;
+    white-space: nowrap; /* Keeps text on one line */
+    text-decoration: none;
+}
 
-    &:hover {
-        opacity: 0.9;
-    }
+.btn:hover {
+    opacity: 0.9;
+    transform: translateY(-1px);
+}
+.btn:active {
+    transform: translateY(0);
+}
+
+/* Variants */
+.btn-primary {
+    background-color: var(--primary);
+    color: white;
+    border-color: var(--primary);
+}
+.btn-secondary {
+    background-color: var(--secondary);
+    color: white;
+    border-color: var(--secondary);
+}
+.btn-success {
+    background-color: var(--success);
+    color: white;
+    border-color: var(--success);
+}
+.btn-danger {
+    background-color: var(--danger);
+    color: white;
+    border-color: var(--danger);
+}
+
+.btn-outline {
+    background-color: transparent;
+    border-color: #cbd5e1;
+    color: var(--dark);
+}
+.btn-outline:hover {
+    background-color: #e2e8f0;
+}
+
+/* --- Forms --- */
+.form-group {
+    margin-bottom: 1rem;
+}
+
+.form-label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 0.4rem;
+    font-size: 0.9rem;
+    color: var(--secondary);
+}
+
+.form-control {
+    display: block;
+    width: 100%;
+    padding: 0.6rem 0.8rem;
+    font-size: 0.95rem;
+    color: var(--dark);
+    background-color: #fff;
+    border: 1px solid #cbd5e1;
+    border-radius: var(--radius);
+    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+.form-control:focus {
+    outline: 0;
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15); /* Blue Glow */
 }

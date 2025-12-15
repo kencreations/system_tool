@@ -1,122 +1,317 @@
-<?php include 'viewer.php'; ?>
+<?php 
+$pageTitle = "Web System Creator";
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Web Builder Dashboard</title>
+    <title><?php echo $pageTitle; ?></title>
     <link rel="stylesheet" href="assets/css/main.css">
     <link href="https://cdn.jsdelivr.net/npm/remixicon@2.5.0/fonts/remixicon.css" rel="stylesheet">
+    
+    <style>
+        /* =========================================
+           APP LAYOUT (3-Pane System)
+           ========================================= */
+        body { overflow: hidden; height: 100vh; display: flex; }
+
+        /* PANE 1: MAIN APP NAVIGATION (Left - EXPANDED) */
+        .app-sidebar {
+            width: 260px; /* Expanded Width */
+            background: #1e293b; /* Dark Slate */
+            display: flex; flex-direction: column; 
+            padding: 20px 15px;
+            z-index: 50;
+            flex-shrink: 0;
+            border-right: 1px solid #334155;
+        }
+        
+        .app-brand {
+            color: #fff; font-weight: bold; font-size: 18px; margin-bottom: 30px;
+            display: flex; align-items: center; gap: 10px; padding-left: 10px;
+        }
+
+        .nav-category {
+            font-size: 11px; text-transform: uppercase; letter-spacing: 1px;
+            color: #64748b; margin-bottom: 10px; padding-left: 10px; font-weight: 700;
+        }
+
+        .nav-item {
+            display: flex; align-items: center; gap: 12px;
+            color: #cbd5e1; font-size: 14px; 
+            padding: 10px 12px; border-radius: 6px;
+            cursor: pointer; transition: all 0.2s;
+            margin-bottom: 4px;
+            text-decoration: none;
+        }
+        .nav-item:hover { background: rgba(255,255,255,0.05); color: #fff; }
+        .nav-item.active { background: var(--primary); color: #fff; box-shadow: 0 4px 12px rgba(59,130,246,0.3); }
+        .nav-item i { font-size: 18px; }
+
+        /* PANE 2: PREVIEW AREA (Center - Flexible) */
+        .workspace {
+            flex-grow: 1;
+            background: #f1f5f9;
+            display: flex; flex-direction: column;
+            position: relative;
+            min-width: 0; 
+        }
+        .workspace-header {
+            height: 60px; background: #fff; border-bottom: 1px solid #e2e8f0;
+            display: flex; align-items: center; justify-content: space-between; padding: 0 20px;
+            flex-shrink: 0;
+        }
+        .preview-scroll-area {
+            flex-grow: 1; overflow-y: auto; padding: 40px; display: flex; justify-content: center;
+        }
+        .preview-card {
+            background: white; padding: 40px; border-radius: 8px; 
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); 
+            width: 100%; max-width: 800px; min-height: 400px;
+            border: 1px solid #e2e8f0;
+        }
+
+        /* PANE 3: BUILDER CONTROLS (Right - Fixed Width) */
+        .properties-panel {
+            width: 350px; min-width: 350px;
+            background: #fff; border-left: 1px solid #cbd5e1;
+            display: flex; flex-direction: column;
+            z-index: 40;
+            flex-shrink: 0;
+        }
+
+        /* Builder Specific Styles */
+        .panel-header { padding: 15px 20px; border-bottom: 1px solid #f1f5f9; font-weight: bold; font-size: 14px; color: #334155; display: flex; justify-content: space-between; align-items: center; }
+        .panel-content { flex-grow: 1; overflow-y: auto; padding: 20px; }
+        
+        .field-item {
+            background: #fff; padding: 12px; border-radius: 6px; margin-bottom: 10px;
+            border: 1px solid #e2e8f0; font-size: 13px;
+        }
+        .field-item:hover { border-color: #94a3b8; }
+        .field-item.is-button { border-left: 3px solid var(--primary); background: #f8fafc; }
+
+        /* Code Window (Overlay Mode) */
+        .code-modal {
+            display: none; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.8); z-index: 100;
+            align-items: center; justify-content: center;
+        }
+        .code-window {
+            width: 80%; height: 80%; background: #1e1e1e; border-radius: 8px; overflow: hidden;
+            display: flex; flex-direction: column;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+        }
+        .code-content { flex-grow: 1; padding: 20px; color: #d4d4d4; overflow: auto; font-family: 'Consolas', monospace; margin: 0; }
+        .window-header { background: #2d2d2d; padding: 10px 20px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #333; }
+        
+    </style>
 </head>
 <body>
 
-    <aside class="sidebar">
-        <div class="brand">
-            <i class="ri-code-box-line"></i> WebBuilder
+    <nav class="app-sidebar">
+        <div class="app-brand">
+            <i class="ri-code-box-line text-primary"></i> DevStudio
         </div>
-        <nav class="menu">
-            <p class="text-sm uppercase tracking-wide text-secondary mb-2 mt-4 pl-2">Tools</p>
-            <a href="#" class="active"><i class="ri-layout-grid-line mr-2"></i> Dashboard</a>
-            <a href="#"><i class="ri-palette-line mr-2"></i> Theme Builder</a>
-            
-            <p class="text-sm uppercase tracking-wide text-secondary mb-2 mt-4 pl-2">Library</p>
-            <a href="#nav"><i class="ri-navigation-line mr-2"></i> Navbar</a>
-            <a href="#cards"><i class="ri-bank-card-line mr-2"></i> Cards</a>
-            <a href="#forms"><i class="ri-input-method-line mr-2"></i> Forms</a>
-        </nav>
-        
-        <div class="p-4 border-t border-gray-100">
-            <label class="text-sm font-bold block mb-2">Theme Color</label>
-            <input type="color" id="colorPicker" value="#3b82f6" class="w-full h-8 cursor-pointer rounded">
-        </div>
-    </aside>
 
-    <main class="main-wrapper">
+        <div class="nav-category">Core Generators</div>
         
-        <header class="flex justify-between items-center mb-8">
-            <div>
-                <h1 class="text-2xl font-bold text-dark">Welcome Back</h1>
-                <p class="text-secondary">Here are your tools for today.</p>
+        <a href="#" class="nav-item active">
+            <i class="ri-article-line"></i> <span>Form Builder</span>
+        </a>
+        <a href="#" class="nav-item">
+            <i class="ri-layout-masonry-line"></i> <span>Card Positioning</span>
+        </a>
+        <a href="#" class="nav-item">
+            <i class="ri-layout-left-line"></i> <span>Nav & Sidebar</span>
+        </a>
+
+        <div class="nav-category" style="margin-top: 20px;">Components</div>
+        
+        <a href="#" class="nav-item">
+            <i class="ri-table-line"></i> <span>Tables</span>
+        </a>
+        <a href="#" class="nav-item">
+            <i class="ri-notification-badge-line"></i> <span>Notifications</span>
+        </a>
+        <a href="#" class="nav-item">
+            <i class="ri-alert-line"></i> <span>Alerts</span>
+        </a>
+
+        <div class="nav-item" style="margin-top: auto;">
+            <i class="ri-settings-4-line"></i> <span>Settings</span>
+        </div>
+    </nav>
+
+    <main class="workspace">
+        <header class="workspace-header">
+            <h3 style="margin:0; font-size:16px; font-weight: 600; color: #1e293b;">Form Builder Workspace</h3>
+            <div class="flex items-center">
+                <button onclick="toggleCode(true)" class="btn btn-outline" style="font-size: 0.85rem; padding: 0.4rem 0.8rem;">
+                    <i class="ri-code-s-slash-line"></i> View Code
+                </button>
+                <button class="btn btn-primary ml-auto" style="margin-left: 10px; font-size: 0.85rem; padding: 0.4rem 0.8rem;">
+                    <i class="ri-save-line"></i> Save Project
+                </button>
             </div>
-            <button class="btn bg-dark text-white rounded px-4 py-2">
-                <i class="ri-download-cloud-line"></i> Export Project
-            </button>
         </header>
 
-        <div class="grid grid-cols-3 gap-4 mb-8">
-            <div class="stat-card">
-                <div>
-                    <div class="stat-title">Components</div>
-                    <div class="stat-value">24</div>
-                </div>
-                <div class="icon-box bg-blue-100 text-primary"><i class="ri-stack-line text-xl"></i></div>
-            </div>
-            <div class="stat-card">
-                <div>
-                    <div class="stat-title">Projects</div>
-                    <div class="stat-value">3</div>
-                </div>
-                <div class="icon-box bg-green-100 text-success"><i class="ri-folder-line text-xl"></i></div>
-            </div>
-            <div class="stat-card">
-                <div>
-                    <div class="stat-title">Database</div>
-                    <div class="stat-value">Connected</div>
-                </div>
-                <div class="icon-box bg-purple-100 text-secondary"><i class="ri-database-2-line text-xl"></i></div>
+        <div class="preview-scroll-area">
+            <div class="preview-card">
+                <h2 style="margin-top:0; border-bottom:1px solid #eee; padding-bottom:15px; margin-bottom:20px; font-size:18px; color: #334155;">Preview</h2>
+                <div id="formRenderArea"></div>
             </div>
         </div>
 
-        <div class="flex flex-col gap-8">
-            
-            <div id="nav" class="card">
-                <div class="card-header">Navigation Bar</div>
-                <?php renderComponent("Standard Navbar", "components/navbar.php"); ?>
-            </div>
-
-            <div id="cards" class="card">
-                <div class="card-header">Cards & Containers</div>
-                <p class="text-secondary mb-4">Sample card layouts for your system.</p>
-                <div class="p-4 border border-dashed rounded bg-light text-center text-secondary">
-                    Add components/card-sample.php to see preview
+        <div id="codeModal" class="code-modal">
+            <div class="code-window">
+                <div class="window-header">
+                    <span style="color:#9ca3af; font-size: 13px;">source_code.html</span>
+                    <button onclick="toggleCode(false)" class="btn btn-danger" style="padding:4px 12px; font-size:12px;">Close</button>
                 </div>
+                <pre class="code-content"><code id="codeOutput"></code></pre>
             </div>
-
         </div>
-        <div id="forms" class="card mt-8"> <div class="card-header">
-        <i class="ri-input-method-line mr-2"></i> Form Elements
-    </div>
-    <p class="text-secondary mb-4 text-sm">
-        Standard inputs, selects, and grid layouts for data entry.
-    </p>
-    
-    <?php renderComponent("General Form Layout", "components/forms.php"); ?>
-</div>
-
     </main>
 
+    <aside class="properties-panel">
+        <div class="panel-header">
+            <span>COMPONENTS</span>
+            <span style="font-size: 10px; color: #94a3b8; font-weight: normal;">DRAG & DROP READY</span>
+        </div>
+        
+        <div style="padding: 15px; border-bottom: 1px solid #f1f5f9; display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+            <button onclick="addComponent('input')" class="btn btn-outline" style="font-size:12px; background: #fff;">
+                <i class="ri-input-cursor-move"></i> Input
+            </button>
+            <button onclick="addComponent('button')" class="btn btn-outline" style="font-size:12px; color:var(--primary); border-color:#bfdbfe; background: #eff6ff;">
+                <i class="ri-toggle-line"></i> Button
+            </button>
+        </div>
+
+        <div class="panel-content" id="fieldList"></div>
+    </aside>
+
     <script>
-        const colorPicker = document.getElementById('colorPicker');
-        colorPicker.addEventListener('input', (e) => {
-            document.documentElement.style.setProperty('--primary', e.target.value);
-            // Optional: You can save this to localStorage so it remembers your choice
-            localStorage.setItem('themeColor', e.target.value);
-        });
+        // --- 1. DATA STATE ---
+        let components = [
+            { category: 'input', label: 'Email Address', type: 'email', width: 'w-100', placeholder: 'name@email.com' },
+            { category: 'input', label: 'Password', type: 'password', width: 'w-100', placeholder: '******' },
+            { category: 'button', label: 'Cancel', type: 'button', width: 'w-auto', style: 'btn-secondary', align: 'ml-auto' },
+            { category: 'button', label: 'Sign In', type: 'submit', width: 'w-auto', style: 'btn-primary', align: '' }
+        ];
 
-        // Load saved color on refresh
-        const savedColor = localStorage.getItem('themeColor');
-        if(savedColor) {
-            document.documentElement.style.setProperty('--primary', savedColor);
-            colorPicker.value = savedColor;
+        // --- 2. RENDER RIGHT PANEL ---
+        function renderList() {
+            const list = document.getElementById('fieldList');
+            list.innerHTML = '';
+
+            components.forEach((comp, index) => {
+                const item = document.createElement('div');
+                item.className = `field-item ${comp.category === 'button' ? 'is-button' : ''}`;
+                
+                const inputStyle = "width:100%; padding:5px; font-size:12px; border:1px solid #cbd5e1; border-radius:4px; margin-bottom:6px; color: #1e293b;";
+                const widthOpts = `
+                    <option value="w-100" ${comp.width === 'w-100' ? 'selected' : ''}>100%</option>
+                    <option value="w-50" ${comp.width === 'w-50' ? 'selected' : ''}>50%</option>
+                    <option value="w-33" ${comp.width === 'w-33' ? 'selected' : ''}>33%</option>
+                    <option value="w-auto" ${comp.width === 'w-auto' ? 'selected' : ''}>Auto</option>
+                `;
+
+                let html = `
+                    <div style="display:flex; justify-content:space-between; margin-bottom:8px;">
+                        <span style="font-weight:bold; color:#64748b; font-size:10px;">${comp.category === 'button' ? 'BUTTON' : 'INPUT'} #${index + 1}</span>
+                        <div>
+                            <i class="ri-arrow-up-s-line" style="cursor:pointer; margin-right:5px; color:#94a3b8;" onclick="moveItem(${index}, -1)"></i>
+                            <i class="ri-arrow-down-s-line" style="cursor:pointer; margin-right:5px; color:#94a3b8;" onclick="moveItem(${index}, 1)"></i>
+                            <i class="ri-delete-bin-line" style="cursor:pointer; color:#ef4444;" onclick="removeItem(${index})"></i>
+                        </div>
+                    </div>
+                `;
+
+                if (comp.category === 'input') {
+                    html += `
+                        <input type="text" style="${inputStyle}" value="${comp.label}" oninput="updateItem(${index}, 'label', this.value)">
+                        <div style="display:grid; grid-template-columns: 1fr 1fr; gap:5px;">
+                            <select style="${inputStyle}" onchange="updateItem(${index}, 'type', this.value)">
+                                <option value="text" ${comp.type === 'text' ? 'selected' : ''}>Text</option>
+                                <option value="email" ${comp.type === 'email' ? 'selected' : ''}>Email</option>
+                                <option value="password" ${comp.type === 'password' ? 'selected' : ''}>Pass</option>
+                                <option value="number" ${comp.type === 'number' ? 'selected' : ''}>Num</option>
+                            </select>
+                            <select style="${inputStyle}" onchange="updateItem(${index}, 'width', this.value)">${widthOpts}</select>
+                        </div>
+                    `;
+                } else {
+                    html += `
+                        <input type="text" style="${inputStyle}" value="${comp.label}" oninput="updateItem(${index}, 'label', this.value)">
+                        <div style="display:grid; grid-template-columns: 1fr 1fr; gap:5px;">
+                            <select style="${inputStyle}" onchange="updateItem(${index}, 'style', this.value)">
+                                <option value="btn-primary" ${comp.style === 'btn-primary' ? 'selected' : ''}>Blue</option>
+                                <option value="btn-secondary" ${comp.style === 'btn-secondary' ? 'selected' : ''}>Gray</option>
+                                <option value="btn-danger" ${comp.style === 'btn-danger' ? 'selected' : ''}>Red</option>
+                                <option value="btn-success" ${comp.style === 'btn-success' ? 'selected' : ''}>Green</option>
+                                <option value="btn-outline" ${comp.style === 'btn-outline' ? 'selected' : ''}>Outline</option>
+                            </select>
+                            <select style="${inputStyle}" onchange="updateItem(${index}, 'width', this.value)">${widthOpts}</select>
+                        </div>
+                        <select style="${inputStyle}" onchange="updateItem(${index}, 'align', this.value)">
+                            <option value="" ${comp.align === '' ? 'selected' : ''}>None</option>
+                            <option value="ml-auto" ${comp.align === 'ml-auto' ? 'selected' : ''}>Push Right (Margin)</option>
+                            <option value="justify-center" ${comp.align === 'justify-center' ? 'selected' : ''}>Center</option>
+                        </select>
+                    `;
+                }
+                
+                item.innerHTML = html;
+                list.appendChild(item);
+            });
         }
 
-        // Copy Function
-        function copyCode(btn) {
-            const code = btn.parentElement.nextElementSibling.innerText;
-            navigator.clipboard.writeText(code);
-            const originalText = btn.innerText;
-            btn.innerText = "Copied!";
-            setTimeout(() => btn.innerText = originalText, 2000);
+        // --- 3. RENDER PREVIEW ---
+        function renderForm() {
+            const renderArea = document.getElementById('formRenderArea');
+            const codeOutput = document.getElementById('codeOutput');
+            let html = `<form>\n  <div class="flex flex-wrap -mx-2">\n`;
+
+            components.forEach(comp => {
+                let wrapperClass = `${comp.width} px-2 mb-4`;
+                if (comp.category === 'button') {
+                    wrapperClass += ` flex`; 
+                    if (comp.align === 'ml-auto') wrapperClass += ` ml-auto`;
+                    else if (comp.align) wrapperClass += ` ${comp.align}`;
+                }
+
+                html += `    <div class="${wrapperClass}">\n`;
+                if (comp.category === 'input') {
+                    html += `      <label class="form-label">${comp.label}</label>\n      <input type="${comp.type}" class="form-control" placeholder="${comp.placeholder}">\n`;
+                } else {
+                    html += `      <button type="${comp.type}" class="btn ${comp.style}">${comp.label}</button>\n`;
+                }
+                html += `    </div>\n`;
+            });
+
+            html += `  </div>\n</form>`;
+            renderArea.innerHTML = html;
+            codeOutput.textContent = html;
         }
+
+        // --- 4. ACTIONS ---
+        function addComponent(type) {
+            if(type === 'input') components.push({ category: 'input', label: 'Label', type: 'text', width: 'w-100', placeholder: '' });
+            else components.push({ category: 'button', label: 'Btn', type: 'button', width: 'w-auto', style: 'btn-primary', align: '' });
+            renderList(); renderForm();
+            setTimeout(() => { const list = document.getElementById('fieldList'); list.scrollTop = list.scrollHeight; }, 50);
+        }
+        function removeItem(i) { components.splice(i, 1); renderList(); renderForm(); }
+        function moveItem(i, dir) { 
+            let n = i + dir;
+            if (n >= 0 && n < components.length) { [components[i], components[n]] = [components[n], components[i]]; renderList(); renderForm(); }
+        }
+        function updateItem(i, k, v) { components[i][k] = v; renderForm(); }
+        function toggleCode(show) { document.getElementById('codeModal').style.display = show ? 'flex' : 'none'; }
+
+        renderList(); renderForm();
     </script>
 </body>
 </html>
