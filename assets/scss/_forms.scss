@@ -70,3 +70,101 @@ select.form-control {
         font-weight: 400;
     }
 }
+/* --- TOGGLE SWITCH --- */
+.form-switch {
+    display: inline-flex;
+    align-items: center;
+    cursor: pointer;
+
+    input {
+        display: none;
+    }
+
+    .switch-track {
+        width: 44px;
+        height: 24px;
+        background-color: #cbd5e1;
+        border-radius: 99px;
+        position: relative;
+        transition: background-color 0.2s;
+    }
+
+    .switch-thumb {
+        width: 20px;
+        height: 20px;
+        background-color: #fff;
+        border-radius: 50%;
+        position: absolute;
+        top: 2px;
+        left: 2px;
+        transition: transform 0.2s;
+        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+    }
+
+    input:checked + .switch-track {
+        background-color: var(--primary);
+        .switch-thumb {
+            transform: translateX(20px);
+        }
+    }
+
+    .switch-label {
+        margin-left: 10px;
+        font-size: 0.9rem;
+        color: #334155;
+    }
+}
+
+/* --- RANGE SLIDER --- */
+.form-range {
+    width: 100%;
+    -webkit-appearance: none;
+    height: 6px;
+    background: #e2e8f0;
+    border-radius: 5px;
+    outline: none;
+
+    &::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        width: 18px;
+        height: 18px;
+        background: var(--primary);
+        border-radius: 50%;
+        cursor: pointer;
+        transition: transform 0.1s;
+        &:hover {
+            transform: scale(1.1);
+        }
+    }
+}
+
+/* --- FILE UPLOAD ZONE --- */
+.upload-zone {
+    border: 2px dashed #cbd5e1;
+    border-radius: 12px;
+    padding: 2rem;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.2s;
+    background: #f8fafc;
+
+    &:hover {
+        border-color: var(--primary);
+        background: #eff6ff;
+    }
+
+    i {
+        font-size: 2.5rem;
+        color: #94a3b8;
+        margin-bottom: 1rem;
+        display: block;
+    }
+    span {
+        color: #64748b;
+        font-size: 0.9rem;
+    }
+    .upload-btn {
+        color: var(--primary);
+        font-weight: 600;
+    }
+}

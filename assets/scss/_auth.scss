@@ -1,0 +1,91 @@
+/* assets/scss/_auth.scss */
+
+.auth-layout {
+    min-height: 100vh;
+    display: flex;
+    background-color: #f8fafc;
+}
+
+/* 1. Centered Card Layout */
+.auth-centered {
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    padding: 2rem;
+
+    .auth-card {
+        background: #fff;
+        width: 100%;
+        max-width: 420px;
+        padding: 2.5rem;
+        border-radius: 16px;
+        box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05),
+            0 8px 10px -6px rgba(0, 0, 0, 0.01);
+        border: 1px solid rgba(0, 0, 0, 0.05);
+    }
+}
+
+/* 2. Split Screen Layout */
+.auth-split {
+    width: 100%;
+
+    .auth-banner {
+        display: none;
+        @media (min-width: 768px) {
+            display: flex;
+            flex: 1;
+            background-color: #1e293b; /* Fallback */
+            background-size: cover;
+            background-position: center;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            padding: 3rem;
+        }
+    }
+
+    .auth-form-side {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 2rem;
+        background: #fff;
+        max-width: 600px; /* Limit width on large screens */
+
+        .auth-content {
+            width: 100%;
+            max-width: 400px;
+        }
+    }
+}
+
+/* Common Typography */
+.auth-header {
+    margin-bottom: 2rem;
+    text-align: center;
+
+    h1 {
+        font-size: 1.75rem;
+        font-weight: 700;
+        color: #1e293b;
+        margin-bottom: 0.5rem;
+    }
+    p {
+        color: #64748b;
+        font-size: 0.95rem;
+    }
+}
+
+.auth-footer {
+    margin-top: 1.5rem;
+    text-align: center;
+    font-size: 0.9rem;
+    color: #64748b;
+
+    a {
+        color: var(--primary);
+        text-decoration: none;
+        font-weight: 600;
+    }
+}

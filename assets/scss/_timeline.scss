@@ -1,0 +1,114 @@
+/* assets/scss/_timeline.scss */
+
+.timeline {
+    position: relative;
+    padding: 1rem 0;
+
+    /* The Vertical Line */
+    &::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 20px; /* Line position */
+        width: 2px;
+        background: #e2e8f0;
+        z-index: 0;
+    }
+}
+
+.timeline-item {
+    position: relative;
+    padding-left: 50px; /* Space for dot + line */
+    margin-bottom: 1.5rem;
+
+    &:last-child {
+        margin-bottom: 0;
+    }
+}
+
+/* The Dot / Icon Marker */
+.timeline-marker {
+    position: absolute;
+    left: 11px; /* Center on line (20px line position - half marker width) */
+    top: 4px; /* Align with title text */
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: #fff;
+    border: 2px solid #cbd5e1;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+
+    /* Icon Style Override */
+    &.has-icon {
+        width: 32px;
+        height: 32px;
+        left: 5px; /* Re-center larger icon */
+        top: 0;
+        border: none;
+        color: #fff;
+        font-size: 1rem;
+    }
+}
+
+/* Marker Variants */
+.marker-primary {
+    border-color: #3b82f6;
+    background: #fff;
+}
+.marker-success {
+    border-color: #22c55e;
+    background: #fff;
+}
+.marker-warning {
+    border-color: #f59e0b;
+    background: #fff;
+}
+.marker-danger {
+    border-color: #ef4444;
+    background: #fff;
+}
+
+/* Icon Backgrounds */
+.bg-primary {
+    background-color: #3b82f6;
+}
+.bg-success {
+    background-color: #22c55e;
+}
+.bg-warning {
+    background-color: #f59e0b;
+}
+.bg-danger {
+    background-color: #ef4444;
+}
+
+/* Content */
+.timeline-content {
+    background: #fff; /* Optional card look */
+
+    .timeline-date {
+        font-size: 0.75rem;
+        color: #94a3b8;
+        font-weight: 600;
+        margin-bottom: 0.25rem;
+        display: block;
+    }
+
+    .timeline-title {
+        font-size: 0.95rem;
+        font-weight: 600;
+        color: #334155;
+        margin-bottom: 0.25rem;
+    }
+
+    .timeline-text {
+        font-size: 0.9rem;
+        color: #64748b;
+        line-height: 1.5;
+    }
+}

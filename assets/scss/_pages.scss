@@ -1,0 +1,256 @@
+/* assets/scss/_pages.scss */
+
+/* --- SHARED AUTH STYLES --- */
+.auth-wrapper {
+    min-height: 100vh;
+    width: 100%;
+    display: flex;
+    font-family: var(--font-base, sans-serif);
+}
+
+.form-group {
+    margin-bottom: 1.25rem;
+}
+
+.form-label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: #334155;
+}
+
+.form-control {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    font-size: 0.95rem;
+    border: 1px solid #cbd5e1;
+    border-radius: 8px;
+    transition: all 0.2s;
+
+    &:focus {
+        outline: none;
+        border-color: var(--primary);
+        box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+    }
+}
+
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.75rem 1.5rem;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 0.95rem;
+    cursor: pointer;
+    transition: all 0.2s;
+    border: none;
+    text-decoration: none;
+}
+
+.btn-primary {
+    background: #3b82f6;
+    color: white;
+    width: 100%;
+}
+.btn-primary:hover {
+    background: #2563eb;
+}
+
+/* Google Button Style */
+.btn-google {
+    background: #fff;
+    color: #334155;
+    border: 1px solid #e2e8f0;
+    width: 100%;
+    margin-top: 10px;
+
+    &:hover {
+        background: #f8fafc;
+        border-color: #cbd5e1;
+    }
+    img {
+        margin-right: 8px;
+        width: 18px;
+    }
+}
+
+/* --- VERSION 1: BENTLEY STYLE (Dark BG, White Card) --- */
+/* --- VERSION 1: BENTLEY STYLE (Dark BG, White Card) --- */
+.auth-v1 {
+    background-color: #0f172a;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    .auth-card {
+        background: #fff;
+        border-radius: 12px;
+        width: 100%;
+        max-width: 420px;
+        padding: 2.5rem;
+        text-align: center; /* Centers Logo & Title */
+        box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+    }
+
+    /* FIX: Force form elements to align left */
+    form {
+        text-align: left;
+        margin-top: 2rem;
+    }
+
+    .auth-logo {
+        width: 48px;
+        height: 48px;
+        background: var(--primary);
+        border-radius: 12px;
+        margin: 0 auto 1.5rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-size: 1.5rem;
+    }
+
+    h1 {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: #1e293b;
+        margin-bottom: 0.5rem;
+    }
+    p {
+        color: #64748b;
+        font-size: 0.95rem;
+    }
+
+    .auth-footer-links {
+        margin-top: 2rem;
+        display: flex;
+        justify-content: center;
+        gap: 1rem;
+        font-size: 0.9rem;
+
+        a {
+            color: #94a3b8;
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+        a:hover {
+            color: #fff;
+        }
+    }
+}
+
+/* --- VERSION 2: CUBEFACTORY STYLE (Form Left, Art Right) --- */
+.auth-v2 {
+    background: #fff;
+    flex-direction: row; /* Side by Side */
+
+    .auth-side-form {
+        width: 100%;
+        padding: 2rem;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center; /* Center form horizontally in its half */
+
+        @media (min-width: 768px) {
+            width: 50%;
+        }
+
+        .form-content {
+            width: 100%;
+            max-width: 420px;
+        }
+    }
+
+    .auth-side-img {
+        display: none;
+        @media (min-width: 768px) {
+            display: flex;
+            width: 50%;
+            background-color: #8b5cf6; /* Violet/Purple Background */
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            position: relative;
+        }
+
+        img {
+            max-width: 80%;
+            object-fit: contain;
+        }
+    }
+
+    .brand-logo {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-weight: 700;
+        font-size: 1.25rem;
+        color: #1e293b;
+        margin-bottom: 3rem;
+    }
+
+    h1 {
+        font-size: 1.8rem;
+        font-weight: 800;
+        color: #1e293b;
+        margin-bottom: 0.5rem;
+    }
+    .subtitle {
+        color: #64748b;
+        margin-bottom: 2.5rem;
+    }
+
+    .form-options {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 1.5rem;
+        font-size: 0.9rem;
+
+        label {
+            color: #475569;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            cursor: pointer;
+        }
+        a {
+            color: #8b5cf6;
+            text-decoration: none;
+            font-weight: 600;
+        }
+    }
+}
+
+/* --- VERSION 3: SIDEBAR (Keep existing) --- */
+.auth-v3 {
+    background: #fff;
+    .auth-sidebar {
+        display: none;
+        @media (min-width: 768px) {
+            display: flex;
+            width: 350px;
+            background-color: #0f172a;
+            color: #fff;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 2.5rem;
+        }
+    }
+    .auth-main {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    .auth-form-container {
+        width: 100%;
+        max-width: 400px;
+        padding: 2rem;
+    }
+}
