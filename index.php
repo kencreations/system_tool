@@ -1,6 +1,4 @@
-<?php 
-$pageTitle = "Web System Creator";
-?>
+<?php $pageTitle = "Form Builder"; ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -10,138 +8,33 @@ $pageTitle = "Web System Creator";
     <link href="https://cdn.jsdelivr.net/npm/remixicon@2.5.0/fonts/remixicon.css" rel="stylesheet">
     
     <style>
-        /* =========================================
-           APP LAYOUT (3-Pane System)
-           ========================================= */
+        /* PAGE SPECIFIC STYLES (Workspace & Right Panel) */
         body { overflow: hidden; height: 100vh; display: flex; }
-
-        /* PANE 1: MAIN APP NAVIGATION (Left - EXPANDED) */
-        .app-sidebar {
-            width: 260px; /* Expanded Width */
-            background: #1e293b; /* Dark Slate */
-            display: flex; flex-direction: column; 
-            padding: 20px 15px;
-            z-index: 50;
-            flex-shrink: 0;
-            border-right: 1px solid #334155;
-        }
         
-        .app-brand {
-            color: #fff; font-weight: bold; font-size: 18px; margin-bottom: 30px;
-            display: flex; align-items: center; gap: 10px; padding-left: 10px;
-        }
+        /* Workspace */
+        .workspace { flex-grow: 1; background: #f1f5f9; display: flex; flex-direction: column; position: relative; min-width: 0; }
+        .workspace-header { height: 60px; background: #fff; border-bottom: 1px solid #e2e8f0; display: flex; align-items: center; justify-content: space-between; padding: 0 20px; flex-shrink: 0; }
+        .preview-scroll-area { flex-grow: 1; overflow-y: auto; padding: 40px; display: flex; justify-content: center; }
+        .preview-card { background: white; padding: 40px; border-radius: 8px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); width: 100%; max-width: 800px; min-height: 400px; border: 1px solid #e2e8f0; }
 
-        .nav-category {
-            font-size: 11px; text-transform: uppercase; letter-spacing: 1px;
-            color: #64748b; margin-bottom: 10px; padding-left: 10px; font-weight: 700;
-        }
-
-        .nav-item {
-            display: flex; align-items: center; gap: 12px;
-            color: #cbd5e1; font-size: 14px; 
-            padding: 10px 12px; border-radius: 6px;
-            cursor: pointer; transition: all 0.2s;
-            margin-bottom: 4px;
-            text-decoration: none;
-        }
-        .nav-item:hover { background: rgba(255,255,255,0.05); color: #fff; }
-        .nav-item.active { background: var(--primary); color: #fff; box-shadow: 0 4px 12px rgba(59,130,246,0.3); }
-        .nav-item i { font-size: 18px; }
-
-        /* PANE 2: PREVIEW AREA (Center - Flexible) */
-        .workspace {
-            flex-grow: 1;
-            background: #f1f5f9;
-            display: flex; flex-direction: column;
-            position: relative;
-            min-width: 0; 
-        }
-        .workspace-header {
-            height: 60px; background: #fff; border-bottom: 1px solid #e2e8f0;
-            display: flex; align-items: center; justify-content: space-between; padding: 0 20px;
-            flex-shrink: 0;
-        }
-        .preview-scroll-area {
-            flex-grow: 1; overflow-y: auto; padding: 40px; display: flex; justify-content: center;
-        }
-        .preview-card {
-            background: white; padding: 40px; border-radius: 8px; 
-            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); 
-            width: 100%; max-width: 800px; min-height: 400px;
-            border: 1px solid #e2e8f0;
-        }
-
-        /* PANE 3: BUILDER CONTROLS (Right - Fixed Width) */
-        .properties-panel {
-            width: 350px; min-width: 350px;
-            background: #fff; border-left: 1px solid #cbd5e1;
-            display: flex; flex-direction: column;
-            z-index: 40;
-            flex-shrink: 0;
-        }
-
-        /* Builder Specific Styles */
+        /* Right Panel */
+        .properties-panel { width: 350px; min-width: 350px; background: #fff; border-left: 1px solid #cbd5e1; display: flex; flex-direction: column; z-index: 40; flex-shrink: 0; }
         .panel-header { padding: 15px 20px; border-bottom: 1px solid #f1f5f9; font-weight: bold; font-size: 14px; color: #334155; display: flex; justify-content: space-between; align-items: center; }
         .panel-content { flex-grow: 1; overflow-y: auto; padding: 20px; }
-        
-        .field-item {
-            background: #fff; padding: 12px; border-radius: 6px; margin-bottom: 10px;
-            border: 1px solid #e2e8f0; font-size: 13px;
-        }
+        .field-item { background: #fff; padding: 12px; border-radius: 6px; margin-bottom: 10px; border: 1px solid #e2e8f0; font-size: 13px; }
         .field-item:hover { border-color: #94a3b8; }
         .field-item.is-button { border-left: 3px solid var(--primary); background: #f8fafc; }
 
-        /* Code Window (Overlay Mode) */
-        .code-modal {
-            display: none; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.8); z-index: 100;
-            align-items: center; justify-content: center;
-        }
-        .code-window {
-            width: 80%; height: 80%; background: #1e1e1e; border-radius: 8px; overflow: hidden;
-            display: flex; flex-direction: column;
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
-        }
+        /* Code Window */
+        .code-modal { display: none; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 100; align-items: center; justify-content: center; }
+        .code-window { width: 80%; height: 80%; background: #1e1e1e; border-radius: 8px; overflow: hidden; display: flex; flex-direction: column; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5); }
         .code-content { flex-grow: 1; padding: 20px; color: #d4d4d4; overflow: auto; font-family: 'Consolas', monospace; margin: 0; }
         .window-header { background: #2d2d2d; padding: 10px 20px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #333; }
-        
     </style>
 </head>
 <body>
 
-    <nav class="app-sidebar">
-        <div class="app-brand">
-            <i class="ri-code-box-line text-primary"></i> DevStudio
-        </div>
-
-        <div class="nav-category">Core Generators</div>
-        
-        <a href="#" class="nav-item active">
-            <i class="ri-article-line"></i> <span>Form Builder</span>
-        </a>
-        <a href="#" class="nav-item">
-            <i class="ri-layout-masonry-line"></i> <span>Card Positioning</span>
-        </a>
-        <a href="#" class="nav-item">
-            <i class="ri-layout-left-line"></i> <span>Nav & Sidebar</span>
-        </a>
-
-        <div class="nav-category" style="margin-top: 20px;">Components</div>
-        
-        <a href="#" class="nav-item">
-            <i class="ri-table-line"></i> <span>Tables</span>
-        </a>
-        <a href="#" class="nav-item">
-            <i class="ri-notification-badge-line"></i> <span>Notifications</span>
-        </a>
-        <a href="#" class="nav-item">
-            <i class="ri-alert-line"></i> <span>Alerts</span>
-        </a>
-
-        <div class="nav-item" style="margin-top: auto;">
-            <i class="ri-settings-4-line"></i> <span>Settings</span>
-        </div>
-    </nav>
+    <?php include 'components/sidebar.php'; ?>
 
     <main class="workspace">
         <header class="workspace-header">
