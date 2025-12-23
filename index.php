@@ -1,4 +1,4 @@
-<?php $pageTitle = "Form Builder"; ?>
+<?php $pageTitle = "Advanced Form Builder"; ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,30 +6,87 @@
     <title><?php echo $pageTitle; ?></title>
     <link rel="stylesheet" href="assets/css/main.css">
     <link href="https://cdn.jsdelivr.net/npm/remixicon@2.5.0/fonts/remixicon.css" rel="stylesheet">
-    
     <style>
-        /* PAGE SPECIFIC STYLES (Workspace & Right Panel) */
+        /* LAYOUT */
         body { overflow: hidden; height: 100vh; display: flex; }
+        .workspace { flex-grow: 1; background: #f1f5f9; display: flex; flex-direction: column; }
         
-        /* Workspace */
-        .workspace { flex-grow: 1; background: #f1f5f9; display: flex; flex-direction: column; position: relative; min-width: 0; }
-        .workspace-header { height: 60px; background: #fff; border-bottom: 1px solid #e2e8f0; display: flex; align-items: center; justify-content: space-between; padding: 0 20px; flex-shrink: 0; }
-        .preview-scroll-area { flex-grow: 1; overflow-y: auto; padding: 40px; display: flex; justify-content: center; }
-        .preview-card { background: white; padding: 40px; border-radius: 8px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); width: 100%; max-width: 800px; min-height: 400px; border: 1px solid #e2e8f0; }
+        /* HEADER STYLES (Fixed) */
+        .workspace-header { 
+            height: 60px; background: #fff; border-bottom: 1px solid #e2e8f0; 
+            display: flex; align-items: center; justify-content: space-between; 
+            padding: 0 20px; flex-shrink: 0;
+        }
+        .header-title { font-size: 16px; font-weight: 600; color: #1e293b; margin: 0; }
+        .header-actions { display: flex; align-items: center; gap: 10px; }
 
-        /* Right Panel */
-        .properties-panel { width: 350px; min-width: 350px; background: #fff; border-left: 1px solid #cbd5e1; display: flex; flex-direction: column; z-index: 40; flex-shrink: 0; }
-        .panel-header { padding: 15px 20px; border-bottom: 1px solid #f1f5f9; font-weight: bold; font-size: 14px; color: #334155; display: flex; justify-content: space-between; align-items: center; }
-        .panel-content { flex-grow: 1; overflow-y: auto; padding: 20px; }
-        .field-item { background: #fff; padding: 12px; border-radius: 6px; margin-bottom: 10px; border: 1px solid #e2e8f0; font-size: 13px; }
+        /* BUTTON STYLES (Explicitly Defined to prevent layout issues) */
+        .btn {
+            display: inline-flex; align-items: center; justify-content: center;
+            padding: 8px 16px; border-radius: 6px; font-weight: 500; font-size: 13px;
+            cursor: pointer; border: 1px solid transparent; transition: all 0.2s;
+            text-decoration: none; line-height: 1.2;
+        }
+        .btn-primary { background: #3b82f6; color: white; }
+        .btn-primary:hover { background: #2563eb; }
+        
+        .btn-danger { background: #ef4444; color: white; }
+        .btn-danger:hover { background: #dc2626; }
+        
+        .btn-outline { background: #fff; border: 1px solid #cbd5e1; color: #475569; }
+        .btn-outline:hover { border-color: #94a3b8; background: #f8fafc; }
+
+        /* PREVIEW AREA */
+        .preview-area { 
+            flex-grow: 1; padding: 40px; overflow-y: auto; 
+            display: flex; justify-content: center; align-items: flex-start;
+        }
+        
+        .form-preview-card {
+            background: #fff; width: 100%; max-width: 800px; padding: 40px; 
+            border-radius: 12px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
+            border: 1px solid #cbd5e1;
+        }
+
+        /* UTILITY CLASSES */
+        .flex-row { display: flex; flex-wrap: wrap; margin: 0 -10px; }
+        .col { padding: 0 10px; margin-bottom: 15px; box-sizing: border-box; }
+        
+        .w-100 { width: 100%; } .w-75 { width: 75%; } .w-66 { width: 66.66%; }
+        .w-50 { width: 50%; } .w-33 { width: 33.33%; } .w-25 { width: 25%; } .w-auto { width: auto; }
+
+        /* Alignment Utilities */
+        .align-start { display: flex; justify-content: flex-start; width: 100%; }
+        .align-center { display: flex; justify-content: center; width: 100%; }
+        .align-end { display: flex; justify-content: flex-end; width: 100%; }
+
+        /* PROPERTIES PANEL */
+        .properties-panel { width: 360px; background: #fff; border-left: 1px solid #cbd5e1; display: flex; flex-direction: column; }
+        .panel-content { padding: 15px; overflow-y: auto; flex: 1; }
+        
+        .field-item { 
+            background: #fff; border: 1px solid #e2e8f0; padding: 12px; border-radius: 8px; margin-bottom: 10px; 
+            transition: border 0.2s; position: relative;
+        }
         .field-item:hover { border-color: #94a3b8; }
-        .field-item.is-button { border-left: 3px solid var(--primary); background: #f8fafc; }
+        .field-item.is-btn { background: #f8fafc; border-left: 3px solid var(--primary); }
+        
+        .field-header { display: flex; justify-content: space-between; margin-bottom: 10px; font-size: 11px; font-weight: 700; color: #64748b; letter-spacing: 0.5px; }
+        
+        .form-input-sm, .form-select-sm { 
+            width: 100%; padding: 6px 8px; border: 1px solid #cbd5e1; border-radius: 4px; 
+            font-size: 12px; color: #334155; margin-bottom: 6px; 
+        }
+        
+        .controls-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
 
-        /* Code Window */
-        .code-modal { display: none; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 100; align-items: center; justify-content: center; }
-        .code-window { width: 80%; height: 80%; background: #1e1e1e; border-radius: 8px; overflow: hidden; display: flex; flex-direction: column; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5); }
-        .code-content { flex-grow: 1; padding: 20px; color: #d4d4d4; overflow: auto; font-family: 'Consolas', monospace; margin: 0; }
-        .window-header { background: #2d2d2d; padding: 10px 20px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #333; }
+        /* CODE MODAL */
+        .code-modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.8); z-index: 100; align-items: center; justify-content: center; }
+        .code-window { width: 85%; height: 85%; background: #1e1e1e; border-radius: 8px; display: flex; flex-direction: column; overflow: hidden; }
+        .code-tabs { display: flex; background: #252526; border-bottom: 1px solid #333; }
+        .code-tab { padding: 12px 20px; color: #999; cursor: pointer; font-size: 13px; border-right: 1px solid #333; }
+        .code-tab.active { background: #1e1e1e; color: #fff; border-top: 2px solid var(--primary); }
+        .code-content { flex: 1; padding: 20px; overflow: auto; color: #d4d4d4; font-family: 'Consolas', monospace; font-size: 13px; line-height: 1.6; white-space: pre; background: transparent; border: none; outline: none; resize: none; }
     </style>
 </head>
 <body>
@@ -37,174 +94,51 @@
     <?php include 'components/sidebar.php'; ?>
 
     <main class="workspace">
-        <header class="workspace-header">
-            <h3 style="margin:0; font-size:16px; font-weight: 600; color: #1e293b;">Form Builder Workspace</h3>
-            <div class="flex items-center">
-                <button onclick="toggleCode(true)" class="btn btn-outline" style="font-size: 0.85rem; padding: 0.4rem 0.8rem;">
-                    <i class="ri-code-s-slash-line"></i> View Code
-                </button>
-                <button class="btn btn-primary ml-auto" style="margin-left: 10px; font-size: 0.85rem; padding: 0.4rem 0.8rem;">
-                    <i class="ri-save-line"></i> Save Project
-                </button>
-            </div>
-        </header>
-
-        <div class="preview-scroll-area">
-            <div class="preview-card">
-                <h2 style="margin-top:0; border-bottom:1px solid #eee; padding-bottom:15px; margin-bottom:20px; font-size:18px; color: #334155;">Preview</h2>
-                <div id="formRenderArea"></div>
+        <div class="workspace-header">
+            <h3 class="header-title">Form Builder</h3>
+            <div class="header-actions">
+                <button onclick="resetForm()" class="btn btn-danger">Reset</button>
+                <button onclick="toggleCode(true)" class="btn btn-primary">View Code</button>
             </div>
         </div>
-
-        <div id="codeModal" class="code-modal">
-            <div class="code-window">
-                <div class="window-header">
-                    <span style="color:#9ca3af; font-size: 13px;">source_code.html</span>
-                    <button onclick="toggleCode(false)" class="btn btn-danger" style="padding:4px 12px; font-size:12px;">Close</button>
-                </div>
-                <pre class="code-content"><code id="codeOutput"></code></pre>
+        
+        <div class="preview-area">
+            <div class="form-preview-card">
+                <h3 style="margin-top:0; border-bottom:1px solid #f1f5f9; padding-bottom:15px; margin-bottom:25px;">Form Preview</h3>
+                <div id="formRenderArea"></div>
             </div>
         </div>
     </main>
 
     <aside class="properties-panel">
-        <div class="panel-header">
-            <span>COMPONENTS</span>
-            <span style="font-size: 10px; color: #94a3b8; font-weight: normal;">DRAG & DROP READY</span>
+        <div style="padding:15px; border-bottom:1px solid #f1f5f9; font-weight:600; font-size:13px; color:#334155;">
+            PROPERTIES
         </div>
+        <div class="panel-content" id="componentList"></div>
         
-        <div style="padding: 15px; border-bottom: 1px solid #f1f5f9; display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
-            <button onclick="addComponent('input')" class="btn btn-outline" style="font-size:12px; background: #fff;">
-                <i class="ri-input-cursor-move"></i> Input
-            </button>
-            <button onclick="addComponent('button')" class="btn btn-outline" style="font-size:12px; color:var(--primary); border-color:#bfdbfe; background: #eff6ff;">
-                <i class="ri-toggle-line"></i> Button
-            </button>
+        <div style="padding:20px; border-top:1px solid #e2e8f0; background:#f8fafc;">
+            <div style="font-size:11px; font-weight:700; color:#94a3b8; margin-bottom:10px;">ADD COMPONENT</div>
+            <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px;">
+                <button class="btn btn-outline" onclick="addField('input')">+ Input</button>
+                <button class="btn btn-outline" onclick="addField('textarea')">+ Textarea</button>
+                <button class="btn btn-outline" onclick="addField('select')">+ Select</button>
+                <button class="btn btn-outline" style="border-color:#bfdbfe; color:var(--primary);" onclick="addField('button')">+ Button</button>
+            </div>
         </div>
-
-        <div class="panel-content" id="fieldList"></div>
     </aside>
 
-    <script>
-        // --- 1. DATA STATE ---
-        let components = [
-            { category: 'input', label: 'Email Address', type: 'email', width: 'w-100', placeholder: 'name@email.com' },
-            { category: 'input', label: 'Password', type: 'password', width: 'w-100', placeholder: '******' },
-            { category: 'button', label: 'Cancel', type: 'button', width: 'w-auto', style: 'btn-secondary', align: 'ml-auto' },
-            { category: 'button', label: 'Sign In', type: 'submit', width: 'w-auto', style: 'btn-primary', align: '' }
-        ];
+    <div id="codeModal" class="code-modal">
+        <div class="code-window">
+            <div class="code-tabs">
+                <div class="code-tab active" onclick="switchTab('html')">HTML Structure</div>
+                <div class="code-tab" onclick="switchTab('js')">JS (AJAX)</div>
+                <div class="code-tab" onclick="switchTab('php')">PHP (Backend)</div>
+                <div style="margin-left:auto; padding:12px 20px; cursor:pointer; color:#ef4444;" onclick="toggleCode(false)">Close</div>
+            </div>
+            <textarea id="codeContent" class="code-content" readonly spellcheck="false"></textarea>
+        </div>
+    </div>
 
-        // --- 2. RENDER RIGHT PANEL ---
-        function renderList() {
-            const list = document.getElementById('fieldList');
-            list.innerHTML = '';
-
-            components.forEach((comp, index) => {
-                const item = document.createElement('div');
-                item.className = `field-item ${comp.category === 'button' ? 'is-button' : ''}`;
-                
-                const inputStyle = "width:100%; padding:5px; font-size:12px; border:1px solid #cbd5e1; border-radius:4px; margin-bottom:6px; color: #1e293b;";
-                const widthOpts = `
-                    <option value="w-100" ${comp.width === 'w-100' ? 'selected' : ''}>100%</option>
-                    <option value="w-50" ${comp.width === 'w-50' ? 'selected' : ''}>50%</option>
-                    <option value="w-33" ${comp.width === 'w-33' ? 'selected' : ''}>33%</option>
-                    <option value="w-auto" ${comp.width === 'w-auto' ? 'selected' : ''}>Auto</option>
-                `;
-
-                let html = `
-                    <div style="display:flex; justify-content:space-between; margin-bottom:8px;">
-                        <span style="font-weight:bold; color:#64748b; font-size:10px;">${comp.category === 'button' ? 'BUTTON' : 'INPUT'} #${index + 1}</span>
-                        <div>
-                            <i class="ri-arrow-up-s-line" style="cursor:pointer; margin-right:5px; color:#94a3b8;" onclick="moveItem(${index}, -1)"></i>
-                            <i class="ri-arrow-down-s-line" style="cursor:pointer; margin-right:5px; color:#94a3b8;" onclick="moveItem(${index}, 1)"></i>
-                            <i class="ri-delete-bin-line" style="cursor:pointer; color:#ef4444;" onclick="removeItem(${index})"></i>
-                        </div>
-                    </div>
-                `;
-
-                if (comp.category === 'input') {
-                    html += `
-                        <input type="text" style="${inputStyle}" value="${comp.label}" oninput="updateItem(${index}, 'label', this.value)">
-                        <div style="display:grid; grid-template-columns: 1fr 1fr; gap:5px;">
-                            <select style="${inputStyle}" onchange="updateItem(${index}, 'type', this.value)">
-                                <option value="text" ${comp.type === 'text' ? 'selected' : ''}>Text</option>
-                                <option value="email" ${comp.type === 'email' ? 'selected' : ''}>Email</option>
-                                <option value="password" ${comp.type === 'password' ? 'selected' : ''}>Pass</option>
-                                <option value="number" ${comp.type === 'number' ? 'selected' : ''}>Num</option>
-                            </select>
-                            <select style="${inputStyle}" onchange="updateItem(${index}, 'width', this.value)">${widthOpts}</select>
-                        </div>
-                    `;
-                } else {
-                    html += `
-                        <input type="text" style="${inputStyle}" value="${comp.label}" oninput="updateItem(${index}, 'label', this.value)">
-                        <div style="display:grid; grid-template-columns: 1fr 1fr; gap:5px;">
-                            <select style="${inputStyle}" onchange="updateItem(${index}, 'style', this.value)">
-                                <option value="btn-primary" ${comp.style === 'btn-primary' ? 'selected' : ''}>Blue</option>
-                                <option value="btn-secondary" ${comp.style === 'btn-secondary' ? 'selected' : ''}>Gray</option>
-                                <option value="btn-danger" ${comp.style === 'btn-danger' ? 'selected' : ''}>Red</option>
-                                <option value="btn-success" ${comp.style === 'btn-success' ? 'selected' : ''}>Green</option>
-                                <option value="btn-outline" ${comp.style === 'btn-outline' ? 'selected' : ''}>Outline</option>
-                            </select>
-                            <select style="${inputStyle}" onchange="updateItem(${index}, 'width', this.value)">${widthOpts}</select>
-                        </div>
-                        <select style="${inputStyle}" onchange="updateItem(${index}, 'align', this.value)">
-                            <option value="" ${comp.align === '' ? 'selected' : ''}>None</option>
-                            <option value="ml-auto" ${comp.align === 'ml-auto' ? 'selected' : ''}>Push Right (Margin)</option>
-                            <option value="justify-center" ${comp.align === 'justify-center' ? 'selected' : ''}>Center</option>
-                        </select>
-                    `;
-                }
-                
-                item.innerHTML = html;
-                list.appendChild(item);
-            });
-        }
-
-        // --- 3. RENDER PREVIEW ---
-        function renderForm() {
-            const renderArea = document.getElementById('formRenderArea');
-            const codeOutput = document.getElementById('codeOutput');
-            let html = `<form>\n  <div class="flex flex-wrap -mx-2">\n`;
-
-            components.forEach(comp => {
-                let wrapperClass = `${comp.width} px-2 mb-4`;
-                if (comp.category === 'button') {
-                    wrapperClass += ` flex`; 
-                    if (comp.align === 'ml-auto') wrapperClass += ` ml-auto`;
-                    else if (comp.align) wrapperClass += ` ${comp.align}`;
-                }
-
-                html += `    <div class="${wrapperClass}">\n`;
-                if (comp.category === 'input') {
-                    html += `      <label class="form-label">${comp.label}</label>\n      <input type="${comp.type}" class="form-control" placeholder="${comp.placeholder}">\n`;
-                } else {
-                    html += `      <button type="${comp.type}" class="btn ${comp.style}">${comp.label}</button>\n`;
-                }
-                html += `    </div>\n`;
-            });
-
-            html += `  </div>\n</form>`;
-            renderArea.innerHTML = html;
-            codeOutput.textContent = html;
-        }
-
-        // --- 4. ACTIONS ---
-        function addComponent(type) {
-            if(type === 'input') components.push({ category: 'input', label: 'Label', type: 'text', width: 'w-100', placeholder: '' });
-            else components.push({ category: 'button', label: 'Btn', type: 'button', width: 'w-auto', style: 'btn-primary', align: '' });
-            renderList(); renderForm();
-            setTimeout(() => { const list = document.getElementById('fieldList'); list.scrollTop = list.scrollHeight; }, 50);
-        }
-        function removeItem(i) { components.splice(i, 1); renderList(); renderForm(); }
-        function moveItem(i, dir) { 
-            let n = i + dir;
-            if (n >= 0 && n < components.length) { [components[i], components[n]] = [components[n], components[i]]; renderList(); renderForm(); }
-        }
-        function updateItem(i, k, v) { components[i][k] = v; renderForm(); }
-        function toggleCode(show) { document.getElementById('codeModal').style.display = show ? 'flex' : 'none'; }
-
-        renderList(); renderForm();
-    </script>
+    <script src="assets/js/form_builder.js"></script>
 </body>
 </html>
